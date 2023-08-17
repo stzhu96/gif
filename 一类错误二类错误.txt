@@ -1,0 +1,231 @@
+from matplotlib import pyplot as plt
+import numpy as np
+import math
+u = 16.37# 均值μ
+u2= 16.27
+sig = 0.025# 标准差δ
+
+x = np.linspace(u - 4*sig, u + 4*sig, 100)
+y_sig = np.exp(-(x - u) ** 2 /(2* sig **2))/(math.sqrt(2*math.pi)*sig)
+x_01 =  np.linspace(u2 - 4*sig, u2 + 4*sig,100)
+y_sig01 = np.exp(-(x_01 - u2) ** 2 /(2* sig **2))/(math.sqrt(2*math.pi)*sig)
+
+plt.plot(x, 10*y_sig, "r-", linewidth=2)
+plt.plot(x_01, 10*y_sig01, "g-", linewidth=2)
+#plt.axvline(u,linestyle='--')
+#plt.axvline(u2,linestyle='--')
+plt.annotate('H1',xy=(16.37,154.47))
+plt.annotate('H0',xy=(16.27,154.47))
+from scipy.stats import  norm
+α=norm.ppf(0.05)
+print(α)
+plt.axvline(u+α*0.025,linestyle='--',color='r')
+
+plt.show()
+
+#############################################################
+from matplotlib import pyplot as plt
+import numpy as np
+import math
+
+u2 = 16.27
+sig = 0.025  # 标准差δ
+
+x_01 = np.linspace(u2 - 4 * sig, u2 + 4 * sig, 100)
+y_sig01 = np.exp(-(x_01 - u2) ** 2 / (2 * sig ** 2)) / (math.sqrt(2 * math.pi) * sig)
+
+plt.box(False)  # Remove outer border of the plot
+
+plt.plot(x_01, 10 * y_sig01, "g-", linewidth=2)
+plt.annotate('H0', xy=(16.27, 154.47), fontsize=20)  # Increase font size to 14
+from scipy.stats import norm
+
+α = norm.ppf(0.05)
+print(α)
+plt.axvline(u + α * 0.025, linestyle='--', color='r')
+
+
+
+
+# Calculate intersection area
+common_area_x = np.linspace(u + α * 0.025, max(x_01), 100)
+common_area_y = 10 * np.minimum(y_sig01, np.interp(common_area_x, x_01, y_sig01))
+
+# Fill the intersection area completely with red color
+plt.fill_between(x_01, 10 * y_sig01, where=(x_01 >= u + α * 0.025), color='red')
+plt.fill_between(common_area_x, common_area_y, color='red')
+
+# Add X axis line
+plt.axhline(y=0, color='black', linewidth=0.8)
+plt.axvline(u2, linestyle='--')
+
+# Remove x and y axis ticks and labels
+plt.xticks([])
+plt.yticks([])
+plt.show()
+
+#################################################################
+from matplotlib import pyplot as plt
+import numpy as np
+import math
+plt.box(False) 
+u = 16.37  # 均值μ
+sig = 0.025  # 标准差δ
+
+x = np.linspace(u - 4 * sig, u + 4 * sig, 100)
+y_sig = np.exp(-(x - u) ** 2 / (2 * sig ** 2)) / (math.sqrt(2 * math.pi) * sig)
+
+plt.plot(x, 10 * y_sig, "r-", linewidth=2)
+plt.axvline(u, linestyle='--')
+
+plt.annotate('H1', xy=(16.37, 154.47), fontsize=20)
+
+from scipy.stats import norm
+
+α = norm.ppf(0.05)
+print(α)
+plt.axvline(u + α * 0.025, linestyle='--', color='r')
+
+# Calculate intersection area on the left side of the vertical line
+common_area_x_left = np.linspace(min(x), u + α * 0.025, 100)
+common_area_y_left = 10 * np.minimum(y_sig, np.interp(common_area_x_left, x, y_sig))
+
+# Fill the intersection area on the left side completely with green color
+plt.fill_between(x, 10 * y_sig, where=(x <= u + α * 0.025), color='green', alpha=0.2)
+
+# Calculate intersection area on the right side of the vertical line
+common_area_x_right = np.linspace(u + α * 0.025, max(x), 100)
+common_area_y_right = 10 * np.minimum(y_sig, np.interp(common_area_x_right, x, y_sig))
+
+# Fill the intersection area on the right side completely with yellow color
+plt.fill_between(x, 10 * y_sig, where=(x >= u + α * 0.025), color='yellow', alpha=0.2)
+#plt.fill_between(common_area_x_right, common_area_y_right, color='yellow')
+plt.axhline(y=0, color='black', linewidth=0.8)
+# Remove x and y axis ticks and labels
+plt.xticks([])
+plt.yticks([])
+plt.show()
+
+#############################################################
+from matplotlib import pyplot as plt
+import numpy as np
+import math
+
+u2 = 16.27
+sig = 0.025  # 标准差δ
+
+x_01 = np.linspace(u2 - 4 * sig, u2 + 4 * sig, 100)
+y_sig01 = np.exp(-(x_01 - u2) ** 2 / (2 * sig ** 2)) / (math.sqrt(2 * math.pi) * sig)
+
+plt.box(False)  # Remove outer border of the plot
+
+plt.plot(x_01, 10 * y_sig01, "g-", linewidth=2)
+plt.annotate('H0', xy=(16.27, 154.47), fontsize=20)  # Increase font size to 14
+from scipy.stats import norm
+
+α = norm.ppf(0.0025)
+print(α)
+plt.axvline(u + α * 0.025, linestyle='--', color='r')
+
+
+
+
+# Calculate intersection area
+common_area_x = np.linspace(u + α * 0.025, max(x_01), 100)
+common_area_y = 10 * np.minimum(y_sig01, np.interp(common_area_x, x_01, y_sig01))
+
+# Fill the intersection area completely with red color
+plt.fill_between(x_01, 10 * y_sig01, where=(x_01 >= u + α * 0.025), color='red')
+plt.fill_between(common_area_x, common_area_y, color='red')
+
+# Add X axis line
+plt.axhline(y=0, color='black', linewidth=0.8)
+plt.axvline(u2, linestyle='--')
+
+# Remove x and y axis ticks and labels
+plt.xticks([])
+plt.yticks([])
+plt.show()
+
+#############################################################
+from matplotlib import pyplot as plt
+import numpy as np
+import math
+
+u2 = 16.27
+sig = 0.025  # 标准差δ
+
+x_01 = np.linspace(u2 - 4 * sig, u2 + 4 * sig, 100)
+y_sig01 = np.exp(-(x_01 - u2) ** 2 / (2 * sig ** 2)) / (math.sqrt(2 * math.pi) * sig)
+
+plt.box(False)  # Remove outer border of the plot
+
+plt.plot(x_01, 10 * y_sig01, "g-", linewidth=2)
+plt.annotate('H0', xy=(16.27, 154.47), fontsize=20)  # Increase font size to 14
+from scipy.stats import norm
+
+α = norm.ppf(0.05)
+print(α)
+plt.axvline(u + α * 0.025, linestyle='--', color='r')
+
+
+
+
+# Calculate intersection area
+common_area_x = np.linspace(u + α * 0.025, max(x_01), 100)
+common_area_y = 10 * np.minimum(y_sig01, np.interp(common_area_x, x_01, y_sig01))
+
+# Fill the intersection area completely with red color
+plt.fill_between(x_01, 10 * y_sig01, where=(x_01 >= u + α * 0.025), color='red')
+plt.fill_between(common_area_x, common_area_y, color='red')
+
+# Add X axis line
+plt.axhline(y=0, color='black', linewidth=0.8)
+plt.axvline(u2, linestyle='--')
+
+# Remove x and y axis ticks and labels
+plt.xticks([])
+plt.yticks([])
+plt.show()
+
+#################################################################
+from matplotlib import pyplot as plt
+import numpy as np
+import math
+plt.box(False) 
+u = 16.37  # 均值μ
+sig = 0.025  # 标准差δ
+
+x = np.linspace(u - 4 * sig, u + 4 * sig, 100)
+y_sig = np.exp(-(x - u) ** 2 / (2 * sig ** 2)) / (math.sqrt(2 * math.pi) * sig)
+
+plt.plot(x, 10 * y_sig, "r-", linewidth=2)
+plt.axvline(u, linestyle='--')
+
+plt.annotate('H1', xy=(16.37, 154.47), fontsize=20)
+
+from scipy.stats import norm
+
+α = norm.ppf(0.0025)
+print(α)
+plt.axvline(u + α * 0.025, linestyle='--', color='r')
+
+# Calculate intersection area on the left side of the vertical line
+common_area_x_left = np.linspace(min(x), u + α * 0.025, 100)
+common_area_y_left = 10 * np.minimum(y_sig, np.interp(common_area_x_left, x, y_sig))
+
+# Fill the intersection area on the left side completely with green color
+plt.fill_between(x, 10 * y_sig, where=(x <= u + α * 0.025), color='green', alpha=0.2)
+
+# Calculate intersection area on the right side of the vertical line
+common_area_x_right = np.linspace(u + α * 0.025, max(x), 100)
+common_area_y_right = 10 * np.minimum(y_sig, np.interp(common_area_x_right, x, y_sig))
+
+# Fill the intersection area on the right side completely with yellow color
+plt.fill_between(x, 10 * y_sig, where=(x >= u + α * 0.025), color='yellow', alpha=0.2)
+#plt.fill_between(common_area_x_right, common_area_y_right, color='yellow')
+plt.axhline(y=0, color='black', linewidth=0.8)
+# Remove x and y axis ticks and labels
+plt.xticks([])
+plt.yticks([])
+plt.show()
